@@ -1,0 +1,24 @@
+﻿ID	IsHide	LastName	FristName	Desc	Sex	Age	BodyType	Hair	Beard	ClothesStuff	BodyColor	BackStory1	BackStory2	BackStory3	Feature1	Feature2	Feature3	Experience1	Experience2	Experience3	Experience4	Relation1	Relation2	Relation3	Relation4	Mod	FixedLooks
+ID	是否隐藏1 不参与随机但参与创建2 不参与随机也不参与创建	姓	名	轮回者来源	性别(1男2女)	年龄	身体类型(1正常2壮3胖)	头发ID	胡须ID	衣服主材料	肤色(正常0白1黑2黄3)	背景故事1	背景故事2	背景故事3	附加特性1	附加特性2	附加特性3	经历1	经历2	经历3	经历4	关系1(ID|NAME)	关系2(ID|NAME)	关系3(ID|NAME)	关系4(ID|NAME)	创建方式	
+990009001	0	จื่อ	เซวียน	Xaou Prototype - จื่อเซวียน (紫萱)	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/zx.FBX	Spr/Npc/zx.png
+990009002	0	ถัง	เสวี่ยเจี้ยน	Xaou Prototype - ถังเสวี่ยเจี้ยน (唐雪见)	2	16	2	4	5		0	10695425	10695426					Experiences11	Experiences12	Experiences13	Experiences30	990009003|Lover	990009001|Friend	990009004|Friend	990009011|Friend	Mod/Npc/Human/Npc1/xj.FBX	Spr/Npc/xj.png
+990009005	0	หลง	ขุย	Xaou Prototype - หลงขุย (龙葵)	2	16	2	3	0		0	10695430	10695429					Experiences11	Experiences12	Experiences13	Experiences30	990009002|Friend	990009003|Brother	990009004|Friend		Mod/Npc/Human/Npc1/lk.FBX	Spr/Npc/lk.png
+990009006	0	หนานกง	หวง	Xaou Prototype - หนานกงหวง (南宫煌)	1	16	1	2	5		0	10695431	10695432					Experiences11	Experiences12	Experiences13	Experiences30					Mod/Npc/Human/Npc1/ngh.FBX	Spr/Npc/ngh.png
+990009008	0	เจียง	ขุย	Xaou Prototype - เจียงขุย (姜葵)	2	16	2	3	0		0	10695430	10695429					Experiences11	Experiences12	Experiences13	Experiences30	990009005|Reincarnation	990009003|Brother	990009002|Friend	990009004|Friend	Mod/Npc/Human/Npc1/hlk/lk.FBX	Spr/Npc/hlk.png
+990009010	0	หวัง	เผิงซวี่	Xaou Prototype - หวังเผิงซวี่ (王蓬絮)	2	16	2	2	5		0	10695437	10695438					Experiences11	Experiences12	Experiences13	Experiences30					Mod/Npc/Human/Npc1/wpx.FBX	Spr/Npc/wpx.png
+990009012	0	หลี่	เซียวเหยา	Xaou Prototype - หลี่เซียวเหยา (李逍遥)	1	16	1	2	5		0	1069013	1069014					Experiences11	Experiences12	Experiences13	Experiences30	990009013|Lover	990009014|Spouse	990009015|Lover	990009016|PracticeMaster	Mod/Npc/Human/Npc1/lxy.FBX	Spr/Npc/lxy.png
+990009013	0	จ้าว	หลิงเอ๋อร์	Xaou Prototype - จ้าวหลิงเอ๋อร์ (赵灵儿)	2	16	2	2	5		0	1069059	1069060					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009012|Lover	990009014|Friend	990009015|Friend	990009016|Friend	Mod/Npc/Human/Npc1/zle.FBX	Spr/Npc/zle.png
+990009014	0	หลิน	เยว่หรู	Xaou Prototype - หลินเยว่หรู (林月如)	2	16	2	2	5		0	1069073	1069074					Experiences11	Experiences12	Experiences13	Experiences30	990009012|Spouse	990009013|Friend	990009015|Friend		Mod/Npc/Human/Npc1/lyr.FBX	Spr/Npc/lyr.png
+990009015	0	อา	หนู	Xaou Prototype - อาหนู (阿奴)	2	16	2	2	5		0	1069071	1069072					Experiences11	Experiences12	Experiences13	Experiences30	990009012|Lover	990009013|Friend	990009014|Friend		Mod/Npc/Human/Npc1/anu.FBX	Spr/Npc/anu.png
+990009016	0	ซือถู	จง	Xaou Prototype - ซือถูจง (司徒钟)	1	16	1	2	5		0	1069075	1069076					Experiences11	Experiences12	Experiences13	Experiences30	990009012|PracticeChild	990009013|Friend			Mod/Npc/Human/Npc1/jjx.FBX	Spr/Npc/jjx.png
+990009011	0	ฉง	โหลว	Xaou Prototype - สวีฉางชิง	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/cl.FBX	Spr/Npc/cl.png
+990009003	0	จิ่ง	เทียน	Xaou Prototype - จื่อเซวียน (紫萱)	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/jt.FBX	Spr/Npc/jt.png
+990009004	0	สวี	ฉางชิง	Xaou Prototype - สวีฉางชิง	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/cq.FBX	Spr/Npc/cq.png
+990009007	0	ซิง	เสวียน	Xaou Prototype - สวีฉางชิง	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/xx.FBX	Spr/Npc/xx.png
+990009009	0	เวิน	ฮุ่ย	Xaou Prototype - สวีฉางชิง	2	16	2	2	5		0	10695423	10695424					Experiences-nvwa	Experiences11	Experiences12	Experiences13	990009004|Lover	990009002|Friend	990009003|Friend	990009011|Friend	Mod/Npc/Human/Npc1/wh1.FBX	Spr/Npc/wh.png
+
+
+
+
+
+
