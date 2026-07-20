@@ -531,21 +531,17 @@ local cardMap = {
     {
         panel="Info_panel3", portrait="imgPortrait1", name="txtName1", idText="ID1", sect="txtSect1",
         age="txtAge1", gender="txtGender1", status="txtStatus1", favor="txtFavor1", power="txtPower1", desc="txtDesc1",
-        recruit="btnRecruit", openheart="btnOpenHeart",
-        extra={"txtbtnRecruit1","txtbtnOpenHeart1"},
+        recruit="btnRecruit1", openheart="btnOpenHeart1",
     },
     {
-        -- การ์ดกลางในไฟล์ล่าสุดชื่อซ้ำ Info_panel2 ทั้งหมด จึงต้องอ้างด้วย GetChildAt
-        panel=17, portrait=18, name=19, idText=20, sect=21,
-        age=22, gender=23, status=24, favor=25, power=26, desc=27,
-        recruit=28, openheart=29,
-        extra={30,31},
+        panel="Info_panel2", portrait="imgPortrait2", name="txtName2", idText="ID2", sect="txtSect2",
+        age="txtAge2", gender="txtGender2", status="txtStatus2", favor="txtFavor2", power="txtPower2", desc="txtDesc2",
+        recruit="btnRecruit2", openheart="btnOpenHeart2",
     },
     {
         panel="Info_panel1", portrait="imgPortrait3", name="txtName3", idText="ID3", sect="txtSect3",
         age="txtAge3", gender="txtGender3", status="txtStatus3", favor="txtFavor3", power="txtPower3", desc="txtDesc3",
         recruit="btnRecruit3", openheart="btnOpenHeart3",
-        extra={"txtbtnRecruit3","txtbtnOpenHeart3"},
     },
 }
 
@@ -811,6 +807,13 @@ function M.BindButtons()
     AddClick(GetChild(view, "btnClose"), function()
         M.Close()
     end)
+
+    SetText(GetChild(view, "btnClose"), "×")
+    SetText(GetChild(view, "btnSearch"), "ค้นหา")
+    SetText(GetChild(view, "btnClear"), "ล้าง")
+    SetText(GetChild(view, "btnPrev"), "◀ ก่อนหน้า")
+    SetText(GetChild(view, "btnNext"), "ถัดไป ▶")
+    SetText(GetChild(view, "btnRefresh"), "รีเฟรชรายชื่อ")
 
     AddClick(GetChild(view, "btnCancel"), function()
         M.Close()
