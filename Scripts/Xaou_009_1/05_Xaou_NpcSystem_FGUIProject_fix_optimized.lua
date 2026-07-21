@@ -42,6 +42,13 @@ M.data = {
 
 }
 
+-- Keep the bundled characters as a reliable fallback. Runtime discovery rebuilds
+-- the visible list from this table so disabled/removed external mods do not leave
+-- stale entries behind after a refresh.
+M._builtinData = M.data
+M.autoDiscoveredCount = 0
+M.autoDiscoveryError = nil
+
 -- ---------- Safe Helpers ----------
 local function ShowMsg(msg)
     msg = tostring(msg or "")
@@ -489,6 +496,43 @@ local function SpawnReincarnateNpcByID(id)
 end
 
 
+local function InviteJianghuNpcBySeed(seed)
+    local ok, err = pcall(function()
+        seed = tonumber(seed)
+        if seed == nil then error("ไม่พบ Jianghu Seed") end
+
+        local discipleCount, discipleMax, _, capacityDebug = GetSchoolCapacity()
+        if discipleCount == nil or discipleMax == nil or discipleMax <= 0 then
+            error("ตรวจจำนวนศิษย์ไม่ได้\n" .. tostring(capacityDebug))
+        end
+        if discipleCount >= discipleMax then
+            error("จำนวนศิษย์เต็มแล้ว " .. tostring(discipleCount) .. "/" .. tostring(discipleMax))
+        end
+
+        local school = CS.XiaWorld.SchoolGlobleMgr.Instance
+        local eventMgr = CS.XiaWorld.GameEventMgr.Instance
+        local world = CS.XiaWorld.World.Instance
+        if school == nil or eventMgr == nil or world == nil then
+            error("ระบบยุทธภพยังไม่พร้อม")
+        end
+        if school:IsJianghuNpcDie(seed) then error("NPC คนนี้เสียชีวิตแล้ว") end
+        if school:IsJianghuNpcLeave(seed) then error("NPC คนนี้กำลังเดินทางอยู่") end
+
+        local save = CS.XiaWorld.GameEventMgr.EventSaveData()
+        save.param1 = seed
+        local eventData = eventMgr:AddEvent(102, world.TolSecond + 1200, save)
+        if eventData == nil then error("สร้างกิจกรรมเชิญ NPC ไม่สำเร็จ") end
+        school:AddJianghuNpcLeave(seed)
+    end)
+
+    if ok then
+        ShowMsg("ส่งคำเชิญแล้ว\nNPC จะเดินทางมาเยี่ยมสำนักในอีกไม่นาน")
+        return true
+    end
+    ShowMsg("ชวน NPC สำนักอื่นไม่สำเร็จ:\n" .. tostring(err))
+    return false
+end
+
 local function GetText(obj)
     if obj == nil then return "" end
     local v = ""
@@ -502,6 +546,247 @@ local function ContainsText(value, key)
     value = tostring(value or "")
     key = tostring(key or "")
     return string.find(string.lower(value), string.lower(key), 1, true) ~= nil
+end
+
+local function ReadCsMember(obj, name, fallback)
+    if obj == nil then return fallback end
+    local ok, value = pcall(function() return obj[name] end)
+    if ok and value ~= nil then return value end
+    return fallback
+end
+
+local function ReadCsListItem(list, index)
+    if list == nil then return nil end
+
+    local ok, value = pcall(function() return list:get_Item(index) end)
+    if ok then return value end
+
+    ok, value = pcall(function() return list[index] end)
+    if ok then return value end
+    return nil
+end
+
+local function NumberValue(value, fallback)
+    local ok, n = pcall(function() return tonumber(value) end)
+    if not ok then n = nil end
+    if n ~= nil then return n end
+    ok, n = pcall(function() return tonumber(tostring(value or "")) end)
+    if not ok then n = nil end
+    if n ~= nil then return n end
+    return fallback
+end
+
+local function SexLabel(value)
+    local n = NumberValue(value, 0)
+    if n == 1 then return "Male" end
+    if n == 2 then return "Female" end
+    return tostring(value or "Unknown")
+end
+
+local function AddDictionaryKeys(dict, output, seen)
+    if dict == nil then return end
+
+    local function add(value)
+        local seed = NumberValue(value, nil)
+        if seed ~= nil and not seen[tostring(seed)] then
+            seen[tostring(seed)] = true
+            table.insert(output, seed)
+        end
+    end
+
+    pcall(function()
+        local e = dict:GetEnumerator()
+        while e:MoveNext() do add(e.Current.Key) end
+    end)
+
+    pcall(function()
+        local e = dict.Keys:GetEnumerator()
+        while e:MoveNext() do add(e.Current) end
+    end)
+end
+
+local function GetJianghuManager()
+    local mgr = nil
+    pcall(function() mgr = JianghuMgr end)
+    if mgr == nil then pcall(function() mgr = CS.XiaWorld.JianghuMgr.Instance end) end
+    return mgr
+end
+
+local function GetJianghuDef(mgr, seed)
+    local def = nil
+    pcall(function() def = mgr:GetJHNpcDataByRandomSeed(seed) end)
+    if def == nil then pcall(function() def = mgr:GetJHNpcDataBySeed(seed) end) end
+    return def
+end
+
+local function GetJianghuName(mgr, def, seed)
+    local name = ""
+    pcall(function() name = tostring(mgr:GetJHNpcName(seed, true, false) or "") end)
+    if name == "" and def ~= nil then
+        local last = tostring(ReadCsMember(def, "LastName", "") or "")
+        local first = tostring(ReadCsMember(def, "FristName", "") or "")
+        if first == "" then first = tostring(ReadCsMember(def, "FirstName", "") or "") end
+        name = last .. first
+    end
+    if name == "" then name = "Jianghu NPC " .. tostring(seed) end
+    return name
+end
+
+local function IsJianghuNpcAvailable(school, seed)
+    local dead = false
+    local left = false
+    pcall(function() dead = school:IsJianghuNpcDie(seed) == true end)
+    pcall(function() left = school:IsJianghuNpcLeave(seed) == true end)
+    return not dead and not left
+end
+
+function M.AutoDiscoverNpcData()
+    local merged = {}
+    local known = {}
+
+    for _, npc in ipairs(M._builtinData or {}) do
+        table.insert(merged, npc)
+        known[tostring(npc.id)] = true
+    end
+
+    M.autoDiscoveredCount = 0
+    M.modDiscoveredCount = 0
+    M.jianghuDiscoveredCount = 0
+    M.autoDiscoveryError = nil
+
+    local ok, err = pcall(function()
+        local mgr = CS.XiaWorld.NpcMgr.Instance
+        if mgr == nil then error("NpcMgr.Instance is nil") end
+
+        local ids = mgr:GetReincarnateIDs(false)
+        if ids == nil then error("GetReincarnateIDs returned nil") end
+
+        local count = NumberValue(ReadCsMember(ids, "Count", 0), 0)
+        local discovered = {}
+
+        for i = 0, count - 1 do
+            local rawId = ReadCsListItem(ids, i)
+            local id = NumberValue(rawId, nil)
+
+            if id ~= nil and id > 0 and not known[tostring(id)] then
+                local def = mgr:GetReincarnateDataByID(id)
+                if def ~= nil then
+                    local hidden = NumberValue(ReadCsMember(def, "IsHide", 0), 0)
+                    local isCreat = NumberValue(ReadCsMember(def, "IsCreat", 0), 0)
+                    local modelPath = tostring(ReadCsMember(def, "Mod", "") or "")
+                    local portrait = tostring(ReadCsMember(def, "FixedLooks", "") or "")
+
+                    -- IsCreat is not a mod marker. The game also sets it for global
+                    -- reincarnation records created from dead characters in other
+                    -- saves. External mods commonly use a high ID even when they use
+                    -- vanilla looks, while built-in reincarnates use low IDs.
+                    local hasCustomAssets = modelPath ~= "" or portrait ~= ""
+                    local isExternalDefinition = isCreat ~= 1
+                    local looksLikeModCharacter = hasCustomAssets or isExternalDefinition
+
+                    if hidden < 2 and looksLikeModCharacter then
+                        local last = tostring(ReadCsMember(def, "LastName", "") or "")
+                        local first = tostring(ReadCsMember(def, "FristName", "") or "")
+                        local name = last .. first
+                        if name == "" then name = "NPC " .. tostring(id) end
+
+                        local desc = tostring(ReadCsMember(def, "Desc", "") or "")
+                        local race = tostring(ReadCsMember(def, "Race", "Human") or "Human")
+                        if race == "" then race = "Human" end
+
+                        table.insert(discovered, {
+                            id = id,
+                            seed = NumberValue(ReadCsMember(def, "Seed", id), id),
+                            fakeId = id,
+                            recruitId = id,
+                            name = name,
+                            last = last,
+                            first = first,
+                            sex = NumberValue(ReadCsMember(def, "Sex", 0), 0),
+                            sexText = SexLabel(ReadCsMember(def, "Sex", 0)),
+                            age = tostring(ReadCsMember(def, "Age", "-")),
+                            sect = "NPC จากม็อดอื่น",
+                            source = "auto_reincarnate",
+                            cn = "",
+                            desc = desc ~= "" and desc or ("Loaded Reincarnate ID " .. tostring(id)),
+                            portrait = portrait,
+                            model = modelPath,
+                            race = race
+                        })
+                        known[tostring(id)] = true
+                    end
+                end
+            end
+        end
+
+        table.sort(discovered, function(a, b)
+            local an = tostring(a.name or "")
+            local bn = tostring(b.name or "")
+            if an == bn then return NumberValue(a.id, 0) < NumberValue(b.id, 0) end
+            return an < bn
+        end)
+
+        for _, npc in ipairs(discovered) do table.insert(merged, npc) end
+        M.modDiscoveredCount = #discovered
+
+        local jmgr = GetJianghuManager()
+        local school = CS.XiaWorld.SchoolGlobleMgr.Instance
+        if jmgr ~= nil and school ~= nil then
+            local seeds = {}
+            local seedSeen = {}
+            AddDictionaryKeys(ReadCsMember(school, "JianghuNpcs", nil), seeds, seedSeen)
+            AddDictionaryKeys(ReadCsMember(jmgr, "KnowNpcData", nil), seeds, seedSeen)
+
+            local jianghu = {}
+            for _, seed in ipairs(seeds) do
+                if IsJianghuNpcAvailable(school, seed) then
+                    local def = GetJianghuDef(jmgr, seed)
+                    if def ~= nil then
+                        local name = GetJianghuName(jmgr, def, seed)
+                        local desc = tostring(ReadCsMember(def, "Desc", "") or "")
+                        local portrait = tostring(ReadCsMember(def, "FixedLooks", "") or "")
+                        if portrait == "" then portrait = tostring(ReadCsMember(def, "RolePaint", "") or "") end
+                        local model = tostring(ReadCsMember(def, "Mod", "") or "")
+
+                        table.insert(jianghu, {
+                            id = seed,
+                            seed = seed,
+                            fakeId = seed,
+                            recruitId = nil,
+                            name = name,
+                            sex = NumberValue(ReadCsMember(def, "Sex", 0), 0),
+                            sexText = SexLabel(ReadCsMember(def, "Sex", 0)),
+                            age = tostring(ReadCsMember(def, "Age", "-")),
+                            sect = "NPC สำนักอื่นบนแผนที่โลก",
+                            source = "jianghu_world",
+                            cn = "",
+                            desc = desc ~= "" and desc or "ตัวละครยุทธภพจากสำนักอื่น",
+                            portrait = portrait,
+                            model = model,
+                            race = tostring(ReadCsMember(def, "Race", "Human") or "Human")
+                        })
+                    end
+                end
+            end
+
+            table.sort(jianghu, function(a, b)
+                local an = tostring(a.name or "")
+                local bn = tostring(b.name or "")
+                if an == bn then return NumberValue(a.seed, 0) < NumberValue(b.seed, 0) end
+                return an < bn
+            end)
+
+            for _, npc in ipairs(jianghu) do table.insert(merged, npc) end
+            M.jianghuDiscoveredCount = #jianghu
+        end
+
+        M.autoDiscoveredCount = M.modDiscoveredCount + M.jianghuDiscoveredCount
+    end)
+
+    if not ok then M.autoDiscoveryError = tostring(err) end
+    M.data = merged
+    M.filteredData = nil
+    return ok, M.autoDiscoveredCount, M.autoDiscoveryError
 end
 
 local function DataList()
@@ -844,6 +1129,13 @@ function M.SendToCore(action)
     end
 
     if action == "recruit" then
+        if npc.source == "jianghu_world" then
+            local ok = InviteJianghuNpcBySeed(seed)
+            SendCoreHook(npc, action, loadedNpc)
+            SendCallback(npc, action, ok)
+            return ok
+        end
+
         -- ม็อดแยกตัวนี้เสก NPC เข้าสำนักเอง โดยใช้ Reincarnate ID ของแถวที่เลือก
         -- ไม่ส่งไปยุ่งกับระบบเก่าของม็อดหลัก
         local recruitId = tonumber(npc.recruitId or npc.reincarnateId or npc.fakeId or npc.id)
@@ -908,8 +1200,16 @@ function M.BindButtons()
     pcall(function() if GetChild(view, "btnOpenHeart") ~= nil then GetChild(view, "btnOpenHeart").title = "ตรวจสอบ" end end)
 
     AddClick(GetChild(view, "btnRefresh"), function()
+        local ok, count, err = M.AutoDiscoverNpcData()
         M.RefreshList()
-        ShowMsg("รีเฟรชรายชื่อ NPC แล้ว")
+        if ok then
+            ShowMsg("รีเฟรชรายชื่อ NPC แล้ว"
+                .. "\nNPC จากม็อดอื่น: " .. tostring(M.modDiscoveredCount or 0)
+                .. "\nNPC สำนักอื่นบนแผนที่โลก: " .. tostring(M.jianghuDiscoveredCount or 0)
+                .. "\nรวมที่ค้นพบอัตโนมัติ: " .. tostring(count))
+        else
+            ShowMsg("รีเฟรชรายชื่อ NPC แล้ว\nสแกนอัตโนมัติไม่สำเร็จ: " .. tostring(err))
+        end
     end)
 
     local nextFn = function()
@@ -1018,6 +1318,7 @@ function M.Open(callback)
     Center(view, root)
 
     M.BindButtons()
+    M.AutoDiscoverNpcData()
     M.RefreshList()
 
     ShowMsg("เปิด NPC Selector แล้ว")
@@ -1035,6 +1336,67 @@ end
 
 function Xaou_ToggleNpcSelector(callback)
     return M.Toggle(callback)
+end
+
+function M.OpenFromNpc(npc, callback)
+    M.originNpc = npc
+    return M.Open(callback)
+end
+
+function Xaou_OpenNpcSelectorFromNpc(npc, callback)
+    return M.OpenFromNpc(npc, callback)
+end
+
+local SelectorNpcButtonMod = nil
+pcall(function() SelectorNpcButtonMod = GameMain:GetMod("Xaou_NpcSelector") end)
+
+local function AddSelectorButtonToNpc(npc)
+    if npc == nil then return end
+
+    local isNpc = false
+    pcall(function() isNpc = npc.ThingType == g_emThingType.Npc end)
+    if not isNpc then return end
+
+    pcall(function() npc:RemoveBtnData("ดึงคนเข้าสำนัก") end)
+    pcall(function()
+        npc:AddBtnData(
+            "ดึงคนเข้าสำนัก",
+            "res/Sprs/ui/icon_hand",
+            "Xaou_OpenNpcSelectorFromNpc(bind)",
+            "เปิดรายชื่อ NPC จากม็อดอื่นและสำนักอื่นบนแผนที่โลก",
+            nil
+        )
+    end)
+end
+
+
+-- Public bridge for Xaou Mod Center or another compatible mod.
+function Xaou_NpcSelector_AddButton(npc)
+    AddSelectorButtonToNpc(npc)
+end
+
+if SelectorNpcButtonMod ~= nil then
+    function SelectorNpcButtonMod:OnEnter()
+        local events = GameMain:GetMod("_Event")
+        if events == nil then return end
+
+        pcall(function()
+            events:UnRegisterEvent(g_emEvent.SelectNpc, "XaouNpcSelector_SelectNpc")
+        end)
+        events:RegisterEvent(g_emEvent.SelectNpc, function(_, npc)
+            AddSelectorButtonToNpc(npc)
+        end, "XaouNpcSelector_SelectNpc")
+    end
+
+    function SelectorNpcButtonMod:OnLeave()
+        local events = GameMain:GetMod("_Event", true)
+        if events ~= nil then
+            pcall(function()
+                events:UnRegisterEvent(g_emEvent.SelectNpc, "XaouNpcSelector_SelectNpc")
+            end)
+        end
+        M.Close()
+    end
 end
 
 _G.Xaou_NpcSelector_Loaded = true
