@@ -1,0 +1,30 @@
+ID	IsHide	LastName	FristName	Desc	Sex	Age	BodyType	Hair	Beard	ClothesStuff	BodyColor	BackStory1	BackStory2	BackStory3	Feature1	Feature2	Feature3	Experience1	Experience2	Experience3	Experience4	Relation1	Relation2	Relation3	Seed	Eyebrows	REye	LEye	Nose	Mouth	Ear	Yinji	Bahen	Shipin	Race	YBodyColor	YHair	Thinks	IsCreat
+ID	是否隐藏1 不参与随机但参与创建2 不参与随机也不参与创建	姓	名	轮回者来源	性别(1男2女)	年龄	身体类型(1正常2壮3胖)	头发ID	胡须ID	衣服主材料	肤色(正常0白1黑2黄3)	背景故事1	背景故事2	背景故事3	附加特性1	附加特性2	附加特性3	经历1	经历2	经历3	经历4	关系1(ID|NAME)	关系2(ID|NAME)	关系3(ID|NAME)		眉毛ID	右眼ID	左眼ID	鼻子ID	嘴巴ID	耳朵ID	印记ID	疤痕ID	饰品ID	创建方式				
+20220001	0	酒	剑仙	酒剑仙	1	44	1	2	3	Item_DeepBlueCloth	2	2021003	2022001	2021001	XianTai	Slovenly		ZiYongKaiJu								1	5	5	1	1	1	0	1	0	Human	0	0		1
+20220002	0	玄	十三	无尘剑仙	1	18	1	3	0	Item_DeepBlueCloth	1	2021003	2022002	2021001	XianTai	BeautifulFace2		Experiences13	XuanShiSan	Experiences11	Experiences31					2	2	2	2	2	1	0	0	0	Human	0	0		1
+20220003	0	洪	庆	麻衣剑仙	1	30	2	10	2	Item_BlackCloth	2	2021003	2022003	2021001	XianTai	HighMan		Experiences30	XuanShiSan							1	1	1	1	1	1	0	3	0	Human	0	0		1
+20220004	0	张	承贞	玄符天师	1	16	1	9	0	Item_DeepBlueCloth	1	2021003	2022004	2021002	XianTai	LunHui_30		Experiences26	Experiences29	Experiences12	XuanShiSan					5	1	1	1	4	1	0	0	0	Human	0	0		1
+20220005	0	碧	瑶	鬼王宗少主	2	16	1	3	0	Item_BlueCloth	1	2021003	2022005	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	1	1	5	4	1	0	0	1	Human	0	0		1
+20220006	0	陆	雪琪	小竹峰首座	2	16	1	3	0	Item_WhiteCloth	1	2021003	2022006	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					3	2	2	5	5	1	0	0	4	Human	0	0		1
+20220007	0	金	瓶儿	妙公子	2	16	1	5	0	Item_CottonCloth	1	2021003	2022007	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	3	3	5	4	1	0	0	1	Human	0	0		1
+20220008	0	周	小环	青云相师	2	16	1	1	0	Item_CottonCloth	1	2021003	2022008	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	6	6	5	4	1	0	0	0	Human	0	0		1
+20220009	0	秦	红殇	霹雳堂护法	2	16	1	5	0	Item_RedCloth	2	2021003	2022009	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					3	2	2	5	5	1	2	0	1	Human	0	0		1
+20220010	0	沈	湘芸	神医之女	2	16	1	2	0	Item_DeepBlueCloth	1	2021003	2022010	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	3	3	5	4	1	0	0	3	Human	0	0		1
+20220011	0	风	吹雪	天意城杀手	2	16	1	5	0	Item_WhiteCloth	1	2021003	2022011	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					3	2	2	5	5	1	0	0	4	Human	0	0		1
+20220012	0	任	清璇	修罗宫四宫主	2	16	1	3	0	Item_YellowCloth	1	2021003	2022012	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	1	1	5	5	1	0	0	2	Human	0	0		1
+20220013	0	姬	无双	天龙八部夜叉	2	16	1	3	0	Item_RedCloth	1	2021003	2022013	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	2	2	5	5	1	0	0	2	Human	0	0		1
+20220014	0	仙	音	忘忧七贤	2	16	1	5	0	Item_PurpleCloth	1	2021003	2022014	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	2	2	5	5	1	0	0	2	Human	0	0		1
+20220015	0	纪	纹	兽王庄四庄主	2	16	1	2	0	Item_BlueCloth	2	2021003	2022015	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	1	1	5	5	1	0	0	3	Human	0	0		1
+20220016	0	唐	中慧	唐门千金	2	16	1	1	0	Item_DeepBlueCloth	1	2021003	2022016	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	1	1	5	5	1	0	0	4	Human	0	0		1
+20220017	0	沈	澜	毒大夫	2	16	1	3	0	Item_PurpleCloth	1	2021003	2022017	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	2	2	5	4	1	0	0	2	Human	0	0		1
+20220018	0	林	沐心	林家千金	2	16	1	2	0	Item_RedCloth	1	2021003	2022018	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	1	1	5	4	1	0	0	0	Human	0	0		1
+20220019	0	星	铃儿	星宫有铃	2	16	1	5	0	Item_YellowCloth	1	2021003	2022019	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	1	1	5	4	1	0	0	2	Human	0	0		1
+20220020	0	肖	青璇	出云公主	2	16	1	5	0	Item_CottonCloth	1	2021003	2022020	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	2	2	5	1	1	0	0	1	Human	0	0		1
+20220021	0	宁	雨昔	圣坊宗主	2	16	1	5	0	Item_CottonCloth	1	2021003	2022021	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					6	2	2	5	1	1	0	0	4	Human	0	0		1
+20220022	0	红	衣	丫鬟	2	16	1	3	0	Item_RedCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220023	0	蓝	衣	丫鬟	2	16	1	3	0	Item_DeepBlueCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220024	0	黄	衣	丫鬟	2	16	1	3	0	Item_YellowCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220025	0	紫	衣	丫鬟	2	16	1	3	0	Item_PurpleCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220026	0	绿	衣	丫鬟	2	16	1	3	0	Item_BlueCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220027	0	白	衣	丫鬟	2	16	1	3	0	Item_WhiteCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
+20220028	0	黑	衣	丫鬟	2	16	1	3	0	Item_BlackCloth	2	2021004	2022022	2021002	XianTai	BeautifulFace2	BanLove	Experiences13	XuanShiSan	Experiences11	Experiences31					7	6	6	5	4	1	0	0	4	Human	0	0		1
